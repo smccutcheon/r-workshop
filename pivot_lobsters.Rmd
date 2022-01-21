@@ -1,0 +1,91 @@
+---
+title: "pivot_lobsters"
+author: "Sarah McCutcheon"
+date: "1/21/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+## attach libraries
+library(tidyverse)
+library(readxl)
+library(here)
+library(skimr)  #install.packages('skimr')
+library(kableExtra) # install.packages('kableExtra')
+
+```
+
+```{r}
+## read in data
+lobsters <- read_xlsx(here("data/lobsters.xlsx"), skip=4)
+```
+
+```{r}
+# explore data
+skimr::skim(lobsters) 
+
+```
+
+```{r}
+#pivot tables with dyplr
+lobsters %>%
+  group_by(year) %>%
+  summarize(count_by_year = n())
+
+#mult variables
+lobsters %>%
+  group_by(site, year) %>%
+  summarize(count_by_siteyear =  n())
+```
+
+```{r}
+lobsters %>%
+  group_by(site, year) %>%
+  summarize(count_by_siteyear =  n(),
+            mean_size_mm = mean(size_mm))
+```
+
+```{r}
+lobsters %>%
+  group_by(site, year) %>%
+  summarize(count_by_siteyear =  n(), 
+            mean_size_mm = mean(size_mm, na.rm=TRUE), 
+            sd_size_mm = sd(size_mm, na.rm=TRUE))
+```
+#assign variable name
+```{r}
+siteyear_summary <- lobsters %>%
+  group_by(site, year) %>%
+  summarize(count_by_siteyear =  n(), 
+            mean_size_mm = mean(size_mm, na.rm = TRUE), 
+            sd_size_mm = sd(size_mm, na.rm = TRUE), 
+            median_size_mm = median(size_mm, na.rm = TRUE))
+
+```
+
+```{r}
+## inspect our new variable 
+siteyear_summary 
+```
+
+```{r}
+## make a table with our new variable
+siteyear_summary %>%
+  kable()
+```
+
+```{r}
+## a ggplot option:
+ggplot(data = siteyear_summary, aes(x = year, y = median_size_mm, color = site)) +
+  geom_line() 
+```
+
+```{r}
+ggsave(here("figures", "lobsters-line.png"))
+```
+
