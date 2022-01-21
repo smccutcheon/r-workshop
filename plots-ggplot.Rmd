@@ -11,7 +11,7 @@ We are going to make plot sin R and it's going to be amazing.
 
 We use the following data from the Santa Barbara Coastal Term Ecological Research and National  Oceanic and Atmospheric Administration in our analyses
 
-```{r}
+```{r echo=FALSE, message=FALSE}
 #Attach packages
 library(tidyverse)
 library(readxl)
@@ -19,7 +19,7 @@ library(here)
 ```
 
 
-```{r}
+```{r echo=FALSE, message=FALSE}
 ca_np <- read_csv(here("data", "ca_np.csv"))
 
 ci_np <- read_excel(here("data", "ci_np.xlsx"))
@@ -27,7 +27,7 @@ ci_np <- read_excel(here("data", "ci_np.xlsx"))
 ```
 
 #Let's make graphs
-```{r}
+```{r results='hide'}
 
 ggplot(data = ci_np, aes(x = year, y = visitors)) +
   geom_line()
@@ -45,3 +45,36 @@ gg_base +
 
 ```
 
+#Customize graphs
+
+```{r}
+
+gg_base +
+  geom_line(
+    color = "purple",
+    linetype = "dashed"
+  )
+
+gg_base + 
+  geom_point(color = "purple",
+             pch = 17,
+             size = 4,
+             alpha = 0.5)
+
+gg_base +
+  geom_col(color = "purple4", fill = "mediumspringgreen")
+```
+
+#Mapping variables onto aesthetics
+
+```{r}
+gg_base + 
+  geom_point(
+    aes(size = visitors,
+        color = visitors),
+    alpha = 0.5
+  )
+
+gg_base + 
+  geom_col(aes(fill = visitors))
+```
