@@ -8,3 +8,40 @@ output: html_document
 #Plots with ggplot2
 
 We are going to make plot sin R and it's going to be amazing.
+
+We use the following data from the Santa Barbara Coastal Term Ecological Research and National  Oceanic and Atmospheric Administration in our analyses
+
+```{r}
+#Attach packages
+library(tidyverse)
+library(readxl)
+library(here)
+```
+
+
+```{r}
+ca_np <- read_csv(here("data", "ca_np.csv"))
+
+ci_np <- read_excel(here("data", "ci_np.xlsx"))
+
+```
+
+#Let's make graphs
+```{r}
+
+ggplot(data = ci_np, aes(x = year, y = visitors)) +
+  geom_line()
+
+gg_base<- ggplot(data = ci_np, aes(x = year, y = visitors))
+
+gg_base +
+  geom_point()
+
+gg_base +
+  geom_col()
+
+gg_base +  
+  geom_area()
+
+```
+
