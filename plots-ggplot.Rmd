@@ -1,0 +1,10 @@
+---
+title: "Creating graphs in R with `ggplot2`"
+author: "Sarah McCutcheon"
+date: "1/20/2022"
+output: html_document
+---
+
+#Plots with ggplot2
+
+We are going to make plot sin R and it's going to be amazing.
