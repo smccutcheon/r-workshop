@@ -17,6 +17,7 @@ library(readxl)
 library(here)
 library(skimr)  #install.packages('skimr')
 library(kableExtra) # install.packages('kableExtra')
+library(dplyr)
 
 ```
 
@@ -87,5 +88,34 @@ ggplot(data = siteyear_summary, aes(x = year, y = median_size_mm, color = site))
 
 ```{r}
 ggsave(here("figures", "lobsters-line.png"))
+```
+#dplyr::count
+```{r}
+lobsters %>%
+  count(site, year)
+
+## This is the same as:
+lobsters %>%
+  group_by(site, year) %>% 
+  summarize(n = n()) %>%
+  ungroup()
+```
+#mutate 
+```{r}
+lobsters %>%
+  mutate(size_m = size_mm / 1000)
+```
+
+```{r}
+lobsters_detailed <- lobsters %>%
+  mutate(size_m = size_mm / 1000, 
+         millenia = 2000,
+         observer = "Allison Horst")
+```
+
+#Select
+```{r}
+lobsters_detailed %>%
+  select(date, site, size_m)
 ```
 
